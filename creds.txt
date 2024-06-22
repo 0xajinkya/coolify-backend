@@ -1,0 +1,3 @@
+PG_DB_USER=coolify_prod
+PG_DB_PASS=coolify#05131
+PG_DB_HOST=coolify.ch8yasewcpld.ap-south-1.rds.amazonaws.com

@@ -9,17 +9,18 @@ dotenv.config({ path: path.join(rootDir, ".env.local") });
 import { PORT } from "./config";
 import { sequelize } from "./db";
 import { app } from "./providers";
-import { Collection, Community, Member, Post, Role, User, Userv2 } from "./models";
+import { Collection, Post, Userv2 } from "./models";
 
 /**
  * Initializes the Express server with Sequelize database connection.
  * Logs connection status and starts the server on specified port.
  */
+
 const initExpress = async () => {
   try {
     const port = Number(PORT);
 
-    sequelize.addModels([User, Role, Community, Member, Collection, Userv2, Post]);
+    sequelize.addModels([Collection, Userv2, Post]);
     // sequelize.addModels([Collection, Userv2, Post]);
     // await sequelize.sync({ force: true }); // Uncomment to clear and re-initialize tables
     await sequelize.sync({ alter: true }); // Syncs models with database without clearing existing data
