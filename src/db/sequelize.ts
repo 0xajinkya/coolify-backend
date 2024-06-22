@@ -18,7 +18,10 @@ export const sequelize = new Sequelize({
   password: PG_PASSWORD,        // Password for database authentication
   host: PG_HOST,                // Database host address
   port: Number(PG_PORT),        // Port number of the database server
-  ssl: Boolean(PG_SSL),         // Whether to use SSL for the connection (true/false)
+  // ssl: Boolean(PG_SSL),         // Whether to use SSL for the connection (true/false)
   logging: false,               // Disable Sequelize's logging (true to enable)
   clientMinMessages: PG_CLIENT_MIN_MSG,  // Minimum message level for client messages
+  ssl: {
+    rejectUnauthorized: false,
+  }
 });
