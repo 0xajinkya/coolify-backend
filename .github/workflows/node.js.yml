@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Change ownership of work directory
-      run: sudo chown -R $USER:$USER /home/ubuntu/actions-runner/_work/backend/backend
+      run: sudo chown -R $USER:$USER /home/ubuntu/actions-runner/_work/coolify-backend/coolify-backend
 
     - uses: actions/checkout@v3
 
