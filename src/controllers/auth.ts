@@ -294,6 +294,7 @@ export const signinUser = async (
           name: user.name,
           email: user.email,
           created_at: user.createdAt,
+          verified: user.verified
         },
         meta: {
           access_token: encSession,
