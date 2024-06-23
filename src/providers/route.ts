@@ -48,5 +48,6 @@ export const mountExtensionRoutes = (app: Application): Application => {
       ],
     })
   );
+  
   return app.use("/ext", extensionRouter);
 };
