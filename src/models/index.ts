@@ -5,3 +5,4 @@ export * from "./Member";
 export * from "./Userv2";
 export * from "./Collection";
 export * from "./Post";
+export * from "./UserToken";

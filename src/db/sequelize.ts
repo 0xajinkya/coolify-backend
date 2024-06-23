@@ -1,5 +1,5 @@
 import Sequelize from "@sequelize/core";
-import { PG_CLIENT_MIN_MSG, PG_DB, PG_HOST, PG_PASSWORD, PG_PORT, PG_SSL, PG_USER } from "../config";
+import { MODE, PG_CLIENT_MIN_MSG, PG_DB, PG_HOST, PG_PASSWORD, PG_PORT, PG_SSL, PG_USER } from "../config";
 import { PostgresDialect } from "@sequelize/postgres";
 
 
@@ -13,7 +13,7 @@ import { PostgresDialect } from "@sequelize/postgres";
 
 export const sequelize = new Sequelize({
   dialect: PostgresDialect,     // The dialect of the database (e.g., 'postgres')
-  database: PG_DB,              // Name of the PostgreSQL database
+  database: MODE === "dev"  ? "coolify-dev" : PG_DB,              // Name of the PostgreSQL database
   user: PG_USER,                // Username for database authentication
   password: PG_PASSWORD,        // Password for database authentication
   host: PG_HOST,                // Database host address

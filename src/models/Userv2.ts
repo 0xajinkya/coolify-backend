@@ -7,6 +7,7 @@ import {
   NonAttribute,
 } from "@sequelize/core";
 import {
+  AfterCreate,
   Attribute,
   BeforeCreate,
   Default,
@@ -17,8 +18,12 @@ import {
   Unique,
 } from "@sequelize/core/decorators-legacy";
 import { IsEmail } from "@sequelize/validator.js";
-import { hashPassword } from "../utils";
+import { generateStrongOTP, hashPassword } from "../utils";
 import { Collection } from "./Collection";
+import { UserToken } from "./UserToken";
+import { Snowflake } from "@theinternetfolks/snowflake";
+import { verifyEmailTemplate } from "../template";
+import { sendEmail } from "../providers";
 
 @Table({ schema: "public" })
 export class Userv2 extends Model<
@@ -39,6 +44,10 @@ export class Userv2 extends Model<
   @NotNull
   @IsEmail
   declare email: string;
+
+  @Attribute(DataTypes.BOOLEAN)
+  @Default(false)
+  declare verified?: boolean;
 
   @Attribute(DataTypes.STRING)
   @NotNull
@@ -67,4 +76,22 @@ export class Userv2 extends Model<
     user.password = await hashPassword(user.password);
     return;
   }
+
+  @AfterCreate
+	static async sendEmailMdw(user: Userv2) {
+		try {
+			const token = await UserToken.create({
+        id: Snowflake.generate(),
+				purpose: "verify-email",
+				value: generateStrongOTP(),
+				userId: user.get("id")
+			});
+			console.log(token);
+			const { subject, email } = verifyEmailTemplate(token!.value, user!.name as string);
+			const emailRes = await sendEmail(user.get("email"), subject, email);
+			console.log(emailRes);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }
