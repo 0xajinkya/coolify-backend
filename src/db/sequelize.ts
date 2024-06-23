@@ -15,7 +15,7 @@ export const sequelize = new Sequelize({
   dialect: PostgresDialect,     // The dialect of the database (e.g., 'postgres')
   database: MODE === "dev"  ? "coolify-dev" : PG_DB,              // Name of the PostgreSQL database
   user: PG_USER,                // Username for database authentication
-  password: PG_PASSWORD,        // Password for database authentication
+  password: "coolify#05131",        // Password for database authentication
   host: PG_HOST,                // Database host address
   port: Number(PG_PORT),        // Port number of the database server
   // ssl: Boolean(PG_SSL),         // Whether to use SSL for the connection (true/false)
