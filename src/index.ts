@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 // Resolve the root directory
 // Load environment variables from .env.local file
 const rootDir = path.resolve(__dirname, "..");
-dotenv.config({ path: path.join(rootDir, ".env.local") });
+dotenv.config({ path: path.join(rootDir, ".env") });
 
 import { PORT } from "./config";
 import { sequelize } from "./db";

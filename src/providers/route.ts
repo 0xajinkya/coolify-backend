@@ -9,23 +9,24 @@ import cors from "cors";
  */
 export const mountAppRoute = (app: Application): Application => {
   console.log("Mounted app route successfully!");
-    app.use(
-        cors({
-          origin: "*://*.coolify.top/*",
-          methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
-          allowedHeaders: [
-            "Origin",
-            "X-Requested-With",
-            "Content-Type",
-            "Accept",
-            "x-client-key",
-            "x-client-token",
-            "x-client-secret",
-            "Authorization",
-            "Accept",
-          ],
-        })
-      );
+  app.use(
+    cors({
+      origin: ["http://localhost:3000", "https://*.coolify.top"],
+      methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
+      allowedHeaders: [
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "x-client-key",
+        "x-client-token",
+        "x-client-secret",
+        "Authorization",
+        "Accept",
+      ],
+    })
+  );
+
   return app.use("/v1", appRouter); // Mounts router middleware under the "/v1" prefix
 };
 
@@ -48,6 +49,6 @@ export const mountExtensionRoutes = (app: Application): Application => {
       ],
     })
   );
-  
+
   return app.use("/ext", extensionRouter);
 };
