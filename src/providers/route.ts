@@ -11,7 +11,7 @@ export const mountAppRoute = (app: Application): Application => {
   console.log("Mounted app route successfully!");
     app.use(
         cors({
-          origin: "*",
+          origin: "*://*.coolify.top/*",
           methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
           allowedHeaders: [
             "Origin",

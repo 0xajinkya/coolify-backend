@@ -32,6 +32,9 @@ const mountMdw = () => {
  * Mounts application routes using the initRoutes function.
  */
 const mountRoutes = () => {
+  app.get("/", (req, res) => {
+    return res.status(200).json("Connection successful");
+  })
   mountAppRoute(app);
   mountExtensionRoutes(app);
 };
