@@ -356,6 +356,7 @@ export const getMe = async (
           name: user.name,
           email: user.email,
           created_at: user.createdAt,
+          verified: user.verified
         },
       },
     });
