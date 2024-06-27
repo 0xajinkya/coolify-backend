@@ -1,6 +1,4 @@
 import bcrypt from "bcrypt";
-import { ParametricError } from "../errors";
-
 
 /**
  * Hashes a plaintext password using bcrypt hashing algorithm.
@@ -9,12 +7,10 @@ import { ParametricError } from "../errors";
  * @throws {Error} - Throws a ParametricError if an error occurs during hashing.
  */
 export const hashPassword = async (password: string): Promise<string> => {
-	const saltRounds = 10;
-	const hashedPassword = await bcrypt.hash(password, saltRounds);
-	return hashedPassword;
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
 };
-
-
 
 /**
  * Compares an input password with a hashed password using bcrypt.
@@ -24,13 +20,9 @@ export const hashPassword = async (password: string): Promise<string> => {
  * @throws {ParametricError} - Throws a ParametricError if an error occurs during comparison.
  */
 export const comparePasswords = async (
-	inputPassword: string,
-	hashedPassword: string
+  inputPassword: string,
+  hashedPassword: string
 ): Promise<boolean> => {
-	try {
-		const match = await bcrypt.compare(inputPassword, hashedPassword);
-		return match;
-	} catch (error) {
-		throw new ParametricError([{param: "password", message: "Password does not match.", code: "INVALID_INPUT"}])
-	}
+  const match = await bcrypt.compare(inputPassword, hashedPassword);
+  return match;
 };

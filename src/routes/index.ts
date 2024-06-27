@@ -12,6 +12,7 @@ router.use("/role", roleRouter);
 router.use("/auth", authRouter);
 router.use("/community", communityRouter);
 router.use("/member", memberRouter);
+router.use("/collection", extCollectionRouter);
 
 export { router as appRouter } ;
 
