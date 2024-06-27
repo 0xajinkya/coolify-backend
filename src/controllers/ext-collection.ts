@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Collection, Post } from "../models";
 import { Snowflake } from "@theinternetfolks/snowflake";
+import { NonParametricError, ParametricError } from "../errors";
 
 export const createCollection = async (
   req: Request,
@@ -104,6 +105,52 @@ export const getMyCollection = async (
   }
 };
 
+export const getSingleCollection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const page = Number(req.query.page as string);
+
+    const collection = await Collection.findByPk(id);
+    if(!collection) {
+      throw new ParametricError([{message: "Collection not found!", code: "RESOURCE_EXISTS", param: "collection"}]);
+    }
+    if(collection.ownerId !== req.user!.id) {
+      throw new NonParametricError([{message: "You do not have access to this colection!", code: "NOT_ALLOWED_ACCESS"}]);
+    }
+
+    const posts = await Post.findAll({
+      where: {
+        collectionId: collection.id
+      },
+      offset: page > 1 ? (page - 1) * 10 : 0,
+      limit: 10
+    })
+    const postsCount = await Post.count({
+      where: {
+        collectionId: collection.id
+      }
+    });
+
+    return res.status(200).json({
+      status: true,
+      content: {
+        data: [...posts],
+        meta: {
+          pages: Math.ceil(postsCount / 10),
+          page: page > 1 ? page : 1,
+          total: postsCount
+        }
+      }
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const togglePostToCollection = async (
   req: Request,
   res: Response,
@@ -114,6 +161,9 @@ export const togglePostToCollection = async (
     let deleted = false;
     const { postId } = req.query;
 
+    if(!postId) {
+      throw new ParametricError([{message: "Post not selected!", code: "INVALID_INPUT", param: "post"}]);
+    }
     let post = await Post.findOne({
       where: {
         postId: postId as string,
@@ -141,3 +191,29 @@ export const togglePostToCollection = async (
     next(error);
   }
 };
+
+
+export const deleteCollection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+
+    const collection = await Collection.findByPk(id);
+    if(!collection) {
+      throw new ParametricError([{message: "Collection not found!", code: "RESOURCE_EXISTS", param: "collection"}]);
+    }
+    if(collection.ownerId !== req.user!.id) {
+      throw new NonParametricError([{message: "You do not own this resource!", code: "NOT_ALLOWED_ACCESS"}]);
+    }
+    await collection.destroy();
+    return res.status(200).json({
+      status: true,
+      message: "Collection " + collection.name + " deleted."
+    })
+  } catch (error) {
+    next(error);
+  }
+}
