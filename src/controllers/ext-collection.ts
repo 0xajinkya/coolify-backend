@@ -23,6 +23,7 @@ export const createCollection = async (
       status: true,
       content: {
         data: {
+          id: collection.id,
           name: collection.name,
           description: collection.description,
         },
