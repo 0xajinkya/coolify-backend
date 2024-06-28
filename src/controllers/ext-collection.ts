@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Collection, Post } from "../models";
 import { Snowflake } from "@theinternetfolks/snowflake";
 import { NonParametricError, ParametricError } from "../errors";
+import { UpdatedAt } from "@sequelize/core/decorators-legacy";
 
 export const createCollection = async (
   req: Request,
@@ -140,7 +141,13 @@ export const getSingleCollection = async (
       status: true,
       content: {
         data: {
-          collection: collection,
+          collection: {
+            id: collection.id,
+            name: collection.name,
+            description: collection.description,
+            createdAt: collection.createdAt,
+            UpdatedAt: collection.updatedAt
+          },
           posts: posts
         },
         meta: {
