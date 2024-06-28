@@ -123,7 +123,7 @@ export const getSingleCollection = async (
     if(collection.ownerId !== req.user!.id) {
       throw new NonParametricError([{message: "You do not have access to this colection!", code: "NOT_ALLOWED_ACCESS"}]);
     }
-
+    const owner = await collection.getOwner();
     const posts = await Post.findAll({
       where: {
         collectionId: collection.id
@@ -146,7 +146,11 @@ export const getSingleCollection = async (
             name: collection.name,
             description: collection.description,
             createdAt: collection.createdAt,
-            UpdatedAt: collection.updatedAt
+            UpdatedAt: collection.updatedAt,
+            owner: {
+              name: owner?.name,
+              id: owner?.id
+            }
           },
           posts: posts
         },
