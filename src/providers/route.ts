@@ -39,7 +39,7 @@ export const mountAppRoute = (app: Application): Application => {
 export const mountExtensionRoutes = (app: Application): Application => {
   console.log("Mounted extension route successfully!");
   app.use(
-    cors({})
+    cors({origin: "*"})
   );
   return app.use("/ext", extensionRouter);
 };
