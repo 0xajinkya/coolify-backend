@@ -12,11 +12,11 @@ export const mountAppRoute = (app: Application): Application => {
   app.use(
     cors({
       origin: [
-        "http://localhost:3000", 
-        "https://coolify.top", 
+        "http://localhost:3000",
+        "https://coolify.top",
         "https://www..coolify.top",
-        "http://coolify.top", 
-        "http://www..coolify.top"
+        "http://coolify.top",
+        "http://www.coolify.top",
       ],
       methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
       allowedHeaders: [
@@ -39,7 +39,24 @@ export const mountAppRoute = (app: Application): Application => {
 export const mountExtensionRoutes = (app: Application): Application => {
   console.log("Mounted extension route successfully!");
   app.use(
-    cors({origin: "*"})
+    cors({
+      origin: [
+        "*",
+        "chrome-extension://eljomdmdpglchflnloicphdgcbpkfgca"
+      ],
+      methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
+      allowedHeaders: [
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "x-client-key",
+        "x-client-token",
+        "x-client-secret",
+        "Authorization",
+        "Accept",
+      ],
+    })
   );
   return app.use("/ext", extensionRouter);
 };
