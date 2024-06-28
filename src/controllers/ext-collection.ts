@@ -139,7 +139,10 @@ export const getSingleCollection = async (
     return res.status(200).json({
       status: true,
       content: {
-        data: [...posts],
+        data: {
+          collection: collection,
+          posts: posts
+        },
         meta: {
           pages: Math.ceil(postsCount / 10),
           page: page > 1 ? page : 1,
