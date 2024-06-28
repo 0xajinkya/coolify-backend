@@ -51,10 +51,16 @@ export const mountExtensionRoutes = (app: Application): Application => {
         "x-client-token",
         "x-client-secret",
         "Authorization",
-        "Accept",
+        "Access-Control-Allow"
       ],
     })
   );
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization');
+    next();
+  });
 
   return app.use("/ext", extensionRouter);
 };
