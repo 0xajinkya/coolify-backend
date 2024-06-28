@@ -39,28 +39,7 @@ export const mountAppRoute = (app: Application): Application => {
 export const mountExtensionRoutes = (app: Application): Application => {
   console.log("Mounted extension route successfully!");
   app.use(
-    cors({
-      origin: "*",
-      methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
-      allowedHeaders: [
-        "Origin",
-        "X-Requested-With",
-        "Content-Type",
-        "Accept",
-        "x-client-key",
-        "x-client-token",
-        "x-client-secret",
-        "Authorization",
-        "Access-Control-Allow"
-      ],
-    })
+    cors({})
   );
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization');
-    next();
-  });
-
   return app.use("/ext", extensionRouter);
 };
