@@ -33,7 +33,7 @@ import { Post } from "./Post";
     @NotNull
     declare name: string;
   
-    @Attribute(DataTypes.STRING(255))
+    @Attribute(DataTypes.STRING(10000))
     declare description?: string;
   
     @Attribute(DataTypes.DATE)
