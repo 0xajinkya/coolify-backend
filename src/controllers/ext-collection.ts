@@ -117,24 +117,35 @@ export const getSingleCollection = async (
     const page = Number(req.query.page as string);
 
     const collection = await Collection.findByPk(id);
-    if(!collection) {
-      throw new ParametricError([{message: "Collection not found!", code: "RESOURCE_EXISTS", param: "collection"}]);
+    if (!collection) {
+      throw new ParametricError([
+        {
+          message: "Collection not found!",
+          code: "RESOURCE_NOT_FOUND",
+          param: "collection",
+        },
+      ]);
     }
-    if(collection.ownerId !== req.user!.id) {
-      throw new NonParametricError([{message: "You do not have access to this colection!", code: "NOT_ALLOWED_ACCESS"}]);
+    if (collection.ownerId !== req.user!.id) {
+      throw new NonParametricError([
+        {
+          message: "You do not have access to this colection!",
+          code: "NOT_ALLOWED_ACCESS",
+        },
+      ]);
     }
     const owner = await collection.getOwner();
     const posts = await Post.findAll({
       where: {
-        collectionId: collection.id
+        collectionId: collection.id,
       },
       offset: page > 1 ? (page - 1) * 10 : 0,
-      limit: 10
-    })
+      limit: 10,
+    });
     const postsCount = await Post.count({
       where: {
-        collectionId: collection.id
-      }
+        collectionId: collection.id,
+      },
     });
 
     return res.status(200).json({
@@ -149,22 +160,22 @@ export const getSingleCollection = async (
             UpdatedAt: collection.updatedAt,
             owner: {
               name: owner?.name,
-              id: owner?.id
-            }
+              id: owner?.id,
+            },
           },
-          posts: posts
+          posts: posts,
         },
         meta: {
           pages: Math.ceil(postsCount / 10),
           page: page > 1 ? page : 1,
-          total: postsCount
-        }
-      }
-    })
+          total: postsCount,
+        },
+      },
+    });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const togglePostToCollection = async (
   req: Request,
@@ -176,15 +187,18 @@ export const togglePostToCollection = async (
     let deleted = false;
     const { postId } = req.query;
 
-    if(!postId) {
-      throw new ParametricError([{message: "Post not selected!", code: "INVALID_INPUT", param: "post"}]);
+    if (!postId) {
+      throw new ParametricError([
+        { message: "Post not selected!", code: "INVALID_INPUT", param: "post" },
+      ]);
     }
     let post = await Post.findOne({
       where: {
-        postId: postId as string,
+        id: postId as string,
         collectionId: collectionId as string,
       },
     });
+    console.log(post);
     if (post) {
       await post.destroy();
       deleted = true;
@@ -207,7 +221,6 @@ export const togglePostToCollection = async (
   }
 };
 
-
 export const deleteCollection = async (
   req: Request,
   res: Response,
@@ -217,18 +230,29 @@ export const deleteCollection = async (
     const id = req.params.id;
 
     const collection = await Collection.findByPk(id);
-    if(!collection) {
-      throw new ParametricError([{message: "Collection not found!", code: "RESOURCE_EXISTS", param: "collection"}]);
+    if (!collection) {
+      throw new ParametricError([
+        {
+          message: "Collection not found!",
+          code: "RESOURCE_EXISTS",
+          param: "collection",
+        },
+      ]);
     }
-    if(collection.ownerId !== req.user!.id) {
-      throw new NonParametricError([{message: "You do not own this resource!", code: "NOT_ALLOWED_ACCESS"}]);
+    if (collection.ownerId !== req.user!.id) {
+      throw new NonParametricError([
+        {
+          message: "You do not own this resource!",
+          code: "NOT_ALLOWED_ACCESS",
+        },
+      ]);
     }
     await collection.destroy();
     return res.status(200).json({
       status: true,
-      message: "Collection " + collection.name + " deleted."
-    })
+      message: "Collection " + collection.name + " deleted.",
+    });
   } catch (error) {
     next(error);
   }
-}
+};
