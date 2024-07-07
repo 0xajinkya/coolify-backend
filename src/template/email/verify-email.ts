@@ -1,6 +1,6 @@
 export const verifyEmailTemplate = (otp: string, name: string) => {
   return {
-    subject: "Verify your email address with OnlyMess",
+    subject: "Verify your email address with Coolify",
     email: `
             Hello ${name},
             This is Ajinkya from Coollify.
