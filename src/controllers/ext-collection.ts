@@ -194,7 +194,7 @@ export const togglePostToCollection = async (
     }
     let post = await Post.findOne({
       where: {
-        id: postId as string,
+        postId: postId as string,
         collectionId: collectionId as string,
       },
     });
