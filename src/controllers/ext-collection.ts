@@ -179,6 +179,69 @@ export const getSingleCollection = async (
   }
 };
 
+export const getShareSingleCollection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const page = Number(req.query.page as string);
+
+    const collection = await Collection.findByPk(id);
+    if (!collection) {
+      throw new ParametricError([
+        {
+          message: "Collection not found!",
+          code: "RESOURCE_NOT_FOUND",
+          param: "collection",
+        },
+      ]);
+    }
+    const owner = await collection.getOwner();
+    const posts = await Post.findAll({
+      where: {
+        collectionId: collection.id,
+      },
+      offset: page > 1 ? (page - 1) * 10 : 0,
+      limit: 10,
+    });
+    const postsCount = await Post.count({
+      where: {
+        collectionId: collection.id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      content: {
+        data: {
+          collection: {
+            id: collection.id,
+            permission: collection.permission,
+            name: collection.name,
+            description: collection.description,
+            createdAt: collection.createdAt,
+            updatedAt: collection.updatedAt,
+            owner: {
+              name: owner?.name,
+              id: owner?.id,
+            },
+          },
+          posts: posts,
+        },
+        meta: {
+          pages: Math.ceil(postsCount / 10),
+          page: page > 1 ? page : 1,
+          total: postsCount,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const togglePostToCollection = async (
   req: Request,
   res: Response,
