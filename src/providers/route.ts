@@ -9,7 +9,54 @@ import cors from "cors";
  */
 export const mountAppRoute = (app: Application): Application => {
   console.log("Mounted app route successfully!");
-  app.use(
+  // app.use(
+  //   cors({
+  //     origin: [
+  //       "http://localhost:3000",
+  //       "https://coolify.top",
+  //       "https://www..coolify.top",
+  //       "http://coolify.top",
+  //       "http://www.coolify.top",
+  //     ],
+  //     methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
+  //     allowedHeaders: [
+  //       "Origin",
+  //       "X-Requested-With",
+  //       "Content-Type",
+  //       "Accept",
+  //       "x-client-key",
+  //       "x-client-token",
+  //       "x-client-secret",
+  //       "Authorization",
+  //       "Accept",
+  //     ],
+  //   })
+  // );
+  // appRouter.use(
+  //   cors({
+  //     origin: [
+  //       "http://localhost:3000",
+  //       "https://coolify.top",
+  //       "https://www..coolify.top",
+  //       "http://coolify.top",
+  //       "http://www.coolify.top",
+  //     ],
+  //     methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
+  //     allowedHeaders: [
+  //       "Origin",
+  //       "X-Requested-With",
+  //       "Content-Type",
+  //       "Accept",
+  //       "x-client-key",
+  //       "x-client-token",
+  //       "x-client-secret",
+  //       "Authorization",
+  //       "Accept",
+  //     ],
+  //   })
+  // );
+  return app.use(
+    "/v1",
     cors({
       origin: [
         "http://localhost:3000",
@@ -30,33 +77,16 @@ export const mountAppRoute = (app: Application): Application => {
         "Authorization",
         "Accept",
       ],
-    })
-  );
-
-  return app.use("/v1", appRouter); // Mounts router middleware under the "/v1" prefix
+    }),
+    appRouter
+  ); // Mounts router middleware under the "/v1" prefix
 };
 
 export const mountExtensionRoutes = (app: Application): Application => {
   console.log("Mounted extension route successfully!");
-  app.use(
-    cors({
-      origin: [
-        "*",
-        "chrome-extension://eljomdmdpglchflnloicphdgcbpkfgca"
-      ],
-      methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
-      allowedHeaders: [
-        "Origin",
-        "X-Requested-With",
-        "Content-Type",
-        "Accept",
-        "x-client-key",
-        "x-client-token",
-        "x-client-secret",
-        "Authorization",
-        "Accept",
-      ],
-    })
+  return app.use(
+    "/ext",
+    cors(),
+    extensionRouter
   );
-  return app.use("/ext", extensionRouter);
 };

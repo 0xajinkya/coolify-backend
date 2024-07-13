@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { Collection, Post } from "../models";
 import { Snowflake } from "@theinternetfolks/snowflake";
 import { NonParametricError, ParametricError } from "../errors";
-import { UpdatedAt } from "@sequelize/core/decorators-legacy";
 
 export const createCollection = async (
   req: Request,
@@ -10,7 +9,7 @@ export const createCollection = async (
   next: NextFunction
 ) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, permission } = req.body;
 
     const user = req.user;
 
@@ -19,6 +18,7 @@ export const createCollection = async (
       description,
       id: Snowflake.generate(),
       ownerId: user!.id,
+      permission: permission ?? "private"
     });
     return res.status(201).json({
       status: true,
@@ -27,6 +27,7 @@ export const createCollection = async (
           id: collection.id,
           name: collection.name,
           description: collection.description,
+          permission: collection.permission
         },
       },
     });
@@ -154,10 +155,11 @@ export const getSingleCollection = async (
         data: {
           collection: {
             id: collection.id,
+            permission: collection.permission,
             name: collection.name,
             description: collection.description,
             createdAt: collection.createdAt,
-            UpdatedAt: collection.updatedAt,
+            updatedAt: collection.updatedAt,
             owner: {
               name: owner?.name,
               id: owner?.id,
