@@ -30,6 +30,11 @@ import {
     @Attribute(DataTypes.STRING)
     @NotNull
     declare postId: string;
+
+    @Attribute(DataTypes.ENUM(["linkedin", "twitter"]))
+    @Default("linkedin")
+    declare tag?: "linkedin" | "twitter";
+
   
     @Attribute(DataTypes.DATE)
     @Default(new Date())

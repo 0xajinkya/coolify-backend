@@ -250,7 +250,8 @@ export const togglePostToCollection = async (
   try {
     const { id: collectionId } = req.params;
     let deleted = false;
-    const { postId } = req.query;
+    const { postId, tag } = req.query;
+    console.log(tag);
 
     if (!postId) {
       throw new ParametricError([
@@ -272,6 +273,7 @@ export const togglePostToCollection = async (
         collectionId: collectionId as string,
         postId: postId as string,
         id: Snowflake.generate(),
+        tag: ["linkedin", "twitter"].includes(tag as string) ? tag as "linkedin" | "twitter" : "linkedin"
       });
     }
     return res.status(200).json({
