@@ -18,7 +18,7 @@ export const createCollection = async (
       description,
       id: Snowflake.generate(),
       ownerId: user!.id,
-      permission: permission ?? "private"
+      permission: permission ?? "private",
     });
     return res.status(201).json({
       status: true,
@@ -27,7 +27,7 @@ export const createCollection = async (
           id: collection.id,
           name: collection.name,
           description: collection.description,
-          permission: collection.permission
+          permission: collection.permission,
         },
       },
     });
@@ -179,6 +179,45 @@ export const getSingleCollection = async (
   }
 };
 
+export const getMetadataOfSingleCollection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+
+    const collection = await Collection.findByPk(id);
+    if (!collection) {
+      throw new ParametricError([
+        {
+          message: "Collection not found!",
+          code: "RESOURCE_NOT_FOUND",
+          param: "collection",
+        },
+      ]);
+    }
+    const owner = await collection.getOwner();
+    return res.status(200).json({
+      status: true,
+      content: {
+        data: {
+          collection: {
+            id: collection.id,
+            name: collection.name,
+            description: collection.description,
+            owner: {
+              name: owner?.name,
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getShareSingleCollection = async (
   req: Request,
   res: Response,
@@ -273,7 +312,9 @@ export const togglePostToCollection = async (
         collectionId: collectionId as string,
         postId: postId as string,
         id: Snowflake.generate(),
-        tag: ["linkedin", "twitter"].includes(tag as string) ? tag as "linkedin" | "twitter" : "linkedin"
+        tag: ["linkedin", "twitter"].includes(tag as string)
+          ? (tag as "linkedin" | "twitter")
+          : "linkedin",
       });
     }
     return res.status(200).json({
