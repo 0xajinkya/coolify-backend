@@ -10,7 +10,6 @@ export const PG_SSL = process.env.NODE_POSTGRES_SSL;
 export const PG_CLIENT_MIN_MSG = process.env.NODE_POSTGRES_CLIENT_MIN_MESSAGES;
 export const MODE = process.env.NODE_MODE
 
-export const SMTP_IAM=process.env.NODE_SMTP_IAM_USER
 export const SMTP_USER=process.env.NODE_SMTP_USER
 export const SMTP_PASS=process.env.NODE_SMTP_PASS
 export const SMTP_ENDPOINT=process.env.NODE_SMTP_ENDPOINT

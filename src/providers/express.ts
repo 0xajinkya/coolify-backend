@@ -15,7 +15,6 @@ let app: Application = express();
  * and setting up cookie session.
  */
 const mountMdw = () => {
-  
   app.use(express.json());
   app.use(express.urlencoded({ limit: "10mb", extended: true }));
   app.use(

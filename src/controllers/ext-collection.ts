@@ -290,7 +290,7 @@ export const togglePostToCollection = async (
     const { id: collectionId } = req.params;
     let deleted = false;
     const { postId, tag } = req.query;
-    console.log(tag);
+    //console.log(tag);
 
     if (!postId) {
       throw new ParametricError([
@@ -303,7 +303,7 @@ export const togglePostToCollection = async (
         collectionId: collectionId as string,
       },
     });
-    console.log(post);
+    //console.log(post);
     if (post) {
       await post.destroy();
       deleted = true;

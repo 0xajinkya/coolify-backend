@@ -22,7 +22,7 @@ export const globalErrorHandler = (
   next: NextFunction
 ) => {
   if (err instanceof CustomError) {
-    console.log(err);
+    //console.log(err);
     return res
       .status(400)
       .json({ status: false, errors: err.serializeErrors() });

@@ -61,7 +61,7 @@ export const currentUserWHeader = (
     req.currentUser = {
       id: payload,
     };
-    console.log(payload);
+    //console.log(payload);
   } catch (err) {}
 
   next();

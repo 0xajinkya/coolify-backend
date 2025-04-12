@@ -86,10 +86,10 @@ export class Userv2 extends Model<
 				value: generateStrongOTP(),
 				userId: user.get("id")
 			});
-			console.log(token);
+			//console.log(token);
 			const { subject, email } = verifyEmailTemplate(token!.value, user!.name as string);
 			const emailRes = await sendEmail(user.get("email"), subject, email);
-			console.log(emailRes);
+			//console.log(emailRes);
 		} catch (error) {
 			console.log(error);
 		}

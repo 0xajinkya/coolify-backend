@@ -10,7 +10,7 @@ import {
 const transporter = nodemailer.createTransport({
   host: SMTP_ENDPOINT,
   port: Number(SMTP_PORT) || 465,
-  secure: true,
+  secure: false,
   auth: {
     user: SMTP_USER,
     pass: SMTP_PASS,

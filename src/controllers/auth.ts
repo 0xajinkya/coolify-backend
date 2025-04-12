@@ -121,7 +121,7 @@ export const resendVerificationEmail = async (
       value: generateStrongOTP(),
       userId: user.get("id"),
     });
-    console.log(token);
+    //console.log(token);
     const { subject, email } = verifyEmailTemplate(
       token!.value,
       user!.name as string
