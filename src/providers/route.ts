@@ -64,6 +64,8 @@ export const mountAppRoute = (app: Application): Application => {
         "https://www..coolify.top",
         "http://coolify.top",
         "http://www.coolify.top",
+        "https://coolify.0xajinkya.in",
+        "https://www.coolify.0xajinkya.in"
       ],
       methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
       allowedHeaders: [
